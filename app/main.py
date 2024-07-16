@@ -29,7 +29,7 @@ def main():
         status = "HTTP/1.1 200 OK"
         content_type = "Content-Type: text/plain"
         content_length = f"Content-Length: {len(echo_str)}"
-        format_response = f"{status}\r\n{content_type}\r\n{content_length}\r\n{echo_str}"
+        format_response = f"{status}\r\n{content_type}\r\n{content_length}\r\n\r\n{echo_str}"
         response = format_response.encode("utf-8")
         print(f"read: {echo_str}")
     else:
