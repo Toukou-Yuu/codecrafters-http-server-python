@@ -23,6 +23,15 @@ def main():
     method, path, _ = req_line.split(" ")
     if path == "/":
         response = b"HTTP/1.1 200 OK\r\n\r\n"
+    elif path.startswith("/echo"):
+        # /echo/{echo_str}
+        echo_str = path[len("/echo/"):]
+        status = "HTTP/1.1 200 OK"
+        content_type = "Content-Type: text/plain"
+        content_length = f"Content-Length: {len(echo_str)}"
+        format_response = f"{status}\r\n{content_type}\r\n{content_length}\r\n{echo_str}"
+        response = format_response.encode("utf-8")
+        print(f"read: {echo_str}")
     else:
         response = b"HTTP/1.1 404 Not Found\r\n\r\n"
 
