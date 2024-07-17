@@ -15,7 +15,9 @@ class Server:
     def link_start(self) -> None:
         while True:
             self.SERVER_SOCKET = socket.create_server(("localhost", 4221), reuse_port=True)
+            print("listening port: 4221")
             self.CLIENT_SOCKET, self.CLIENT_ADDR = self.SERVER_SOCKET.accept()
+            print("accept request, creating threading to handle it......")
             threading.Thread(target=self.handle_req).start()
 
     def close(self) -> None:
