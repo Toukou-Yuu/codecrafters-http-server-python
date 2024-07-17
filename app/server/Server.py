@@ -34,13 +34,14 @@ class Server:
             self.handle_user_agent()
         else:
             self.handle_404()
-        self.close()
+        # self.close()
 
 
     def handle_root(self) -> None:
         resp = Response()
         resp.add_status(HTTP_200)
         resp.add_header(TEXT_PLAIN)
+        resp.add_header("Content-Length: 0")
         self.CLIENT_SOCKET.sendall(resp.construct_utf8())
 
     def handle_echo(self) -> None:
@@ -67,4 +68,5 @@ class Server:
     def handle_404(self) -> None:
         resp = Response()
         resp.add_status(HTTP_404)
+        resp.add_header("Content-Length: 0")
         self.CLIENT_SOCKET.sendall(resp.construct_utf8())
