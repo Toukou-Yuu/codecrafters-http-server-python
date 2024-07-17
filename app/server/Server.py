@@ -24,6 +24,7 @@ class Server:
 
     def handle_req(self) -> None:
         self.req = Request(self.CLIENT_SOCKET.recv(1024).decode("utf8"))
+        print(f"handling request: {self.req.path}")
         if self.req.full_match_endpoint("/"):
             self.handle_root()
         elif self.req.match_endpoint("/echo"):
