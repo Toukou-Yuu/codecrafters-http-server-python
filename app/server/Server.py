@@ -38,14 +38,18 @@ class Server:
 
 
     def handle_root(self) -> None:
+        print("-----------handle root request-----------")
         resp = Response()
         resp.add_status(HTTP_200)
         resp.add_header(TEXT_PLAIN)
         resp.add_header("Content-Length: 0")
-        self.CLIENT_SOCKET.sendall(resp.construct_utf8())
+        constructed = resp.construct_utf8()
+        print(f"response: {constructed}")
+        self.CLIENT_SOCKET.sendall(constructed)
 
     def handle_echo(self) -> None:
         # 读取echo字符串：/echo/{echo_str}
+        print("-----------handle echo request-----------")
         req_target = self.req.read_req_target()
         body = req_target[len("/echo/"):]
         resp = Response()
@@ -53,20 +57,28 @@ class Server:
         resp.add_body(body)
         resp.add_header(TEXT_PLAIN)
         resp.add_header(f"Content-Length: {len(body)}")
+        constructed = resp.construct_utf8()
+        print(f"response: {constructed}")
         self.CLIENT_SOCKET.sendall(resp.construct_utf8())
 
     def handle_user_agent(self) -> None:
         # 读取用户代理
+        print("-----------handle user-agent-----------")
         resp = Response()
         body = self.req.read_user_agent()
         resp.add_status(HTTP_200)
         resp.add_body(body)
         resp.add_header(TEXT_PLAIN)
         resp.add_header(f"Content-Length: {len(body)}") 
+        constructed = resp.construct_utf8()
+        print(f"response: {constructed}")
         self.CLIENT_SOCKET.sendall(resp.construct_utf8())
 
     def handle_404(self) -> None:
+        print("-----------handle 404-----------")
         resp = Response()
         resp.add_status(HTTP_404)
         resp.add_header("Content-Length: 0")
+        constructed = resp.construct_utf8()
+        print(f"response: {constructed}")
         self.CLIENT_SOCKET.sendall(resp.construct_utf8())
