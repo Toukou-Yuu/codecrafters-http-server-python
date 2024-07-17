@@ -1,5 +1,4 @@
-from Server import Server
-import threading
+from Server_ import Server
 
 def main():
     print("Aincrad online.")
