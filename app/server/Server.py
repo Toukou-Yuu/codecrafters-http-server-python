@@ -13,8 +13,8 @@ VALID_ENDPOINT = ["/", "/echo", "/user-agent"]
 
 class Server:
     def link_start(self) -> None:
+        self.SERVER_SOCKET = socket.create_server(("localhost", 4221), reuse_port=True)
         while True:
-            self.SERVER_SOCKET = socket.create_server(("localhost", 4221), reuse_port=True)
             print("listening port: 4221")
             client_socket, client_addr = self.SERVER_SOCKET.accept()
             print("accept request, creating threading to handle it......")
