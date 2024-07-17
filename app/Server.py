@@ -1,7 +1,7 @@
 import socket
 import threading
-from Request import Request
-from Response import Response
+from app.Request import Request
+from app.Response import Response
 
 # RFC9112标准: status-line = HTTP-version SP status-code SP [ reason-phrase ]
 HTTP_200 = "HTTP/1.1 200 OK"
