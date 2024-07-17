@@ -1,4 +1,4 @@
-from Server_ import Server
+from Server import Server
 
 def main():
     print("Aincrad online.")
