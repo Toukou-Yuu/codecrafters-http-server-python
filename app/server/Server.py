@@ -7,6 +7,7 @@ from app.server.Response import Response
 # RFC9112标准: status-line = HTTP-version SP status-code SP [ reason-phrase ]
 HTTP_200 = "HTTP/1.1 200 OK"
 HTTP_404 = "HTTP/1.1 404 Not Found"
+HTTP_201 = "HTTP/1.1 201 Created"
 TEXT_PLAIN = "Content-Type: text/plain"
 FILE_STREAM = "Content-Type: application/octet-stream"
 EMPTY_STR = ""
@@ -84,16 +85,23 @@ class Aincrad_Server:
         # ./your_program.sh --directory /tmp/
         # path = /files/{filename}
         directory = sys.argv[2]
-        filename = self.req.path[7:]
+        filename = self.req.read_req_target()[7:]
         print(f"dir: {directory}\nfilename: {filename}")
         resp = Response()
+
         try:
-            with open(f"/{directory}/{filename}", "r") as file:
-                body = file.read()
-            resp.add_status(HTTP_200)
-            resp.add_header(FILE_STREAM)
-            resp.add_header(f"Content-Length: {len(body)}")
-            resp.add_body(body)
+            if self.req.method == "POST":
+                body = self.req.read_body()
+                with open(f"/{directory}/{filename}", "w") as file:
+                    file.write(body)
+                resp.add_status(HTTP_201)
+            elif self.req.method == "GET":
+                with open(f"/{directory}/{filename}", "r") as file:
+                    body = file.read()
+                resp.add_status(HTTP_200)
+                resp.add_header(FILE_STREAM)
+                resp.add_header(f"Content-Length: {len(body)}")
+                resp.add_body(body)
         except Exception as e:
             resp.add_status(HTTP_404)
         client_socket.sendall(resp.construct_utf8())

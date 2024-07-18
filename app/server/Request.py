@@ -6,6 +6,7 @@ class Request:
         self.req_line = self.request.split("\r\n")[0]
         self.method, self.path, self.http_version = self.req_line.split(" ")
         self.headers = self.read_headers()
+        self.body = self.request.split("\r\n")[-1]
 
     # RFC9112标准: request-line = method SP request-target SP HTTP-version
     def read_req_line(self) -> str:
@@ -27,6 +28,9 @@ class Request:
         # headers[0]是request-line
         return headers[1:]
     
+    def read_body(self) -> str:
+        return self.body
+
     def read_user_agent(self) -> str:
         for header in self.read_headers():
             if header.startswith("User-Agent:"):
