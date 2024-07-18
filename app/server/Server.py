@@ -1,5 +1,6 @@
 import socket
 import threading
+import sys
 from app.server.Request import Request
 from app.server.Response import Response
 
@@ -7,11 +8,12 @@ from app.server.Response import Response
 HTTP_200 = "HTTP/1.1 200 OK"
 HTTP_404 = "HTTP/1.1 404 Not Found"
 TEXT_PLAIN = "Content-Type: text/plain"
+FILE_STREAM = "Content-Type: application/octet-stream"
 EMPTY_STR = ""
 UTF8 = "utf-8"
 VALID_ENDPOINT = ["/", "/echo", "/user-agent"]
 
-class Server:
+class Aincrad_Server:
     def link_start(self) -> None:
         self.SERVER_SOCKET = socket.create_server(("localhost", 4221), reuse_port=True)
         while True:
@@ -35,10 +37,11 @@ class Server:
         elif self.req.full_match_endpoint("/user-agent"):
             # 读取用户代理
             self.handle_user_agent(client_socket)
+        elif self.req.match_endpoint("/files"):
+            self.handle_file(client_socket)
         else:
             self.handle_404(client_socket)
         # self.close()
-
 
     def handle_root(self, client_socket) -> None:
         print("-----------handle root request-----------")
@@ -75,6 +78,24 @@ class Server:
         resp.add_header(f"Content-Length: {len(body)}") 
         constructed = resp.construct_utf8()
         print(f"response: {constructed}")
+        client_socket.sendall(resp.construct_utf8())
+
+    def handle_file(self, client_socket) -> None:
+        # ./your_program.sh --directory /tmp/
+        # path = /files/{filename}
+        directory = sys.argv[2]
+        filename = self.req.path[7:]
+        print(f"dir: {directory}\nfilename: {filename}")
+        resp = Response()
+        try:
+            with open(f"/{directory}/{filename}", "r") as file:
+                body = file.read()
+            resp.add_status(HTTP_200)
+            resp.add_header(FILE_STREAM)
+            resp.add_header(f"Content-Length: {len(body)}")
+            resp.add_body(body)
+        except Exception as e:
+            resp.add_status(HTTP_404)
         client_socket.sendall(resp.construct_utf8())
 
     def handle_404(self, client_socket) -> None:

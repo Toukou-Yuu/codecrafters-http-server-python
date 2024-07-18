@@ -1,9 +1,8 @@
-from app.server.Server import Server
+from app.server.Server import Aincrad_Server
 
 def main():
     print("Aincrad online.")
-    Aincrad = Server()
-    Aincrad.link_start()
+    Aincrad_Server().link_start()
     print("Aincrad offline.")
 
 if __name__ == "__main__":
