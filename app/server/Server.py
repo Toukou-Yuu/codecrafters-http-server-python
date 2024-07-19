@@ -70,7 +70,7 @@ class Aincrad_Server:
         if encodings.__contains__("gzip"):
             print("client accept gzip")
             resp.add_header(GZIP)
-            body = gzip.compress(body.encode(UTF8)).decode(UTF8)
+            body = gzip.compress(body.encode(UTF8))
         resp.add_status(HTTP_200)
         resp.add_body(body)
         resp.add_header(TEXT_PLAIN)

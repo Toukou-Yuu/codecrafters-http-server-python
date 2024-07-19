@@ -1,10 +1,10 @@
 
 class Response:
     def __init__(self) -> None:
-        self.status_line = ""
-        self.header_list = []
-        self.header_str = ""
-        self.body = ""
+        self.status_line: str = ""
+        self.header_list: list = []
+        self.header_str: str = ""
+        self.body: str|bytes = ""
 
     # RFC9112标准: status-line = HTTP-version SP status-code SP [ reason-phrase ]
     def add_status(self, status: str) -> None:
@@ -21,8 +21,9 @@ class Response:
                 self.header_str += (header + "\r\n")
                 self.header_list.append(header + "\r\n")
 
-    def add_body(self, body: str) -> None:
-        self.body += body
+    def add_body(self, body: str | bytes) -> None:
+        self.body = body
+            
 
     def get_header(self, target: str) -> str:
         for header in self.header_list:
