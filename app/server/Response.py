@@ -35,5 +35,8 @@ class Response:
         return self.header_list
 
     def construct_utf8(self) -> bytes:
-        body_str = f"{self.status_line}\r\n{self.header_str}\r\n{self.body}"
-        return body_str.encode("utf8")
+        if isinstance(self.body, str):
+            body_str = f"{self.status_line}\r\n{self.header_str}\r\n{self.body}"
+            return body_str.encode("utf8")
+        body_bytes = f"{self.status_line}\r\n{self.header_str}\r\n".encode() + self.body
+        return body_bytes

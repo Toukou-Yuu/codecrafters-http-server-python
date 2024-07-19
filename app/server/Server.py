@@ -67,11 +67,10 @@ class Aincrad_Server:
         encodings = self.req.read_header("Accept-Encoding")
         req_target = self.req.read_req_target()
         body = req_target[len("/echo/"):]
-        if encodings.__contains__("gzip"):
+        if "gzip" in encodings:
             print("client accept gzip")
             resp.add_header(GZIP)
             body = gzip.compress(body.encode(UTF8))
-            print("gzip decompress: " + gzip.decompress(body).decode(UTF8))
         resp.add_status(HTTP_200)
         resp.add_body(body)
         resp.add_header(TEXT_PLAIN)
