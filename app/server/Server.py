@@ -2,6 +2,7 @@ import socket
 from socket import socket as type_socket
 import threading
 import sys
+import gzip
 from app.server.Request import Request
 from app.server.Response import Response
 
@@ -64,11 +65,12 @@ class Aincrad_Server:
         print("-----------handle echo request-----------")
         resp = Response()
         encodings = self.req.read_header("Accept-Encoding")
+        req_target = self.req.read_req_target()
+        body = req_target[len("/echo/"):]
         if encodings.__contains__("gzip"):
             print("client accept gzip")
             resp.add_header(GZIP)
-        req_target = self.req.read_req_target()
-        body = req_target[len("/echo/"):]
+            body = gzip.compress(body.encode(UTF8)).decode(UTF8)
         resp.add_status(HTTP_200)
         resp.add_body(body)
         resp.add_header(TEXT_PLAIN)
