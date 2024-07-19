@@ -71,6 +71,7 @@ class Aincrad_Server:
             print("client accept gzip")
             resp.add_header(GZIP)
             body = gzip.compress(body.encode(UTF8))
+            print("gzip decompress: " + gzip.decompress(body).decode(UTF8))
         resp.add_status(HTTP_200)
         resp.add_body(body)
         resp.add_header(TEXT_PLAIN)
