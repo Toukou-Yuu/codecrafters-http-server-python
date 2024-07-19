@@ -2,8 +2,8 @@ import socket
 from socket import socket as type_socket
 import threading
 import sys
-from server.request import Request
-from server.response import Response
+from app.server.request import Request
+from app.server.response import Response
 
 # RFC9112标准: status-line = HTTP-version SP status-code SP [ reason-phrase ]
 # status

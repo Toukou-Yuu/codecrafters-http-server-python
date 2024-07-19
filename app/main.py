@@ -1,4 +1,4 @@
-from server.server import Aincrad_Server
+from app.server.Server import Aincrad_Server
 
 # todo: implement intact HTTP/1.1
 def main():
