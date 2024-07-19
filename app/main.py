@@ -1,6 +1,6 @@
 from app.server.Server import Aincrad_Server
 
-# todo: implement intact HTTP/1.1
+# todo: implement a complete HTTP/1.1
 def main():
     print("Aincrad online.")
     Aincrad_Server().link_start()
