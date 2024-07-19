@@ -18,7 +18,7 @@ class Request:
     def read_header(self, target: str) -> str:
         for header in self.headers:
             if header.startswith(target):
-                return header.split(target)[1].strip()
+                return header.split(":")[1].strip()
         return ""
 
     def read_headers(self) -> list[str]:
