@@ -63,8 +63,8 @@ class Aincrad_Server:
         # 读取echo字符串：/echo/{echo_str}
         print("-----------handle echo request-----------")
         resp = Response()
-        encoding = self.req.read_header("Accept-Encoding")
-        if encoding == "gzip":
+        encodings = self.req.read_header("Accept-Encoding")
+        if encodings.__contains__("gzip"):
             print("client accept gzip")
             resp.add_header(GZIP)
         req_target = self.req.read_req_target()
