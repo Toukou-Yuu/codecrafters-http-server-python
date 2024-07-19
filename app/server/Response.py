@@ -4,7 +4,7 @@ class Response:
         self._status_line: str = ""
         self._header_list: list = []
         self._header_str: str = ""
-        self._body: str | bytes
+        self._body: str | bytes = ""
 
     # RFC9112: status-line = HTTP-version SP status-code SP [ reason-phrase ]
     def add_status_line(self, status_line: str) -> None:
